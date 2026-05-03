@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STGV - డిజిటల్ ప్రశ్న విజ్ఞానం</title>
+    <style>
+        :root {
+            --primary: #8b4513;
+            --gold: #d4af37;
+            --bg: #fdf5e6;
+            --text: #2c1e1e;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .app-card {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 2px solid var(--gold);
+        }
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .content { padding: 20px; text-align: center; }
+        
+        /* విభాగాల బటన్స్ */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .btn {
+            background: #fff;
+            border: 2px solid var(--primary);
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn:hover { background: var(--primary); color: white; }
+
+        /* శ్రీరామ చక్రం గ్రిడ్ */
+        .chakra-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 15px;
+            background: #fff8dc;
+            padding: 10px;
+            border: 1px solid var(--gold);
+        }
+        .char-box {
+            background: white;
+            padding: 10px 5px;
+            border: 1px solid #eee;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .char-box:hover { background: var(--gold); color: white; }
+
+        /* రిజల్ట్ బాక్స్ */
+        .result-box {
+            display: none;
+            animation: fadeIn 0.8s;
+            padding: 20px;
+            background: #fff9e6;
+            border-radius: 10px;
+            border: 1px dashed var(--primary);
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .footer-btn {
+            margin-top: 20px;
+            padding: 10px 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-card">
+    <div class="header">
+        <h2>STGV డిజిటల్ ప్రశ్న విజ్ఞానం</h2>
+        <small>ప్రాచీన సూత్రాలు - ఆధునిక అనువయాలు</small>
+    </div>
+
+    <div class="content" id="main-content">
+        <div id="home-screen">
+            <p>మీ సందేహానికి సంబంధించిన విభాగాన్ని ఎంచుకోండి:</p>
+            <div class="grid-menu">
+                <button class="btn" onclick="openCat('శ్రీరామ చక్రం')">🕉️ శ్రీరామ చక్రం</button>
+                <button class="btn" onclick="openCat('టెక్నాలజీ')">💻 టెక్నాలజీ/కోడింగ్</button>
+                <button class="btn" onclick="openCat('గృహ/స్థల')">🏠 గృహ/స్థల</button>
+                <button class="btn" onclick="openCat('వ్యవసాయ')">🌾 వ్యవసాయ/వృద్ధి</button>
+                <button class="btn" onclick="openCat('ఆరోగ్య')">🏥 ఆరోగ్య/శాంతి</button>
+            </div>
+        </div>
+
+        <div id="grid-screen" style="display: none;">
+            <h3 id="cat-title"></h3>
+            <p id="cat-desc"></p>
+            <div class="chakra-grid" id="shloka-container"></div>
+        </div>
+
+        <div id="result-screen" class="result-box">
+            <h3 style="color: var(--primary);">సందేశం:</h3>
+            <p id="p-shloka" style="font-style: italic; color: #555;"></p>
+            <hr>
+            <p id="p-result" style="font-weight: bold; font-size: 1.1rem;"></p>
+            <p id="p-modern" style="color: #666; font-size: 0.9rem; border-top: 1px solid #ddd; padding-top: 10px;"></p>
+            <button class="footer-btn" onclick="goHome()">మరో ప్రశ్న అడగండి</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const oracleData = {
+        "శ్రీరామ చక్రం": {
+            desc: "కింద ఉన్న అక్షరాలలో ఒకదాన్ని తాకండి",
+            items: [
+                { s: "ప్రబిసి నగరు కీజై సబ కాజా..", r: "తప్పక విజయం లభిస్తుంది. భగవంతుని స్మరిస్తూ అడుగు ముందుకు వేయండి.", m: "నేటి సందర్భం: మీ కొత్త ప్రాజెక్ట్ లేదా డీల్ సక్సెస్ అవుతుంది." },
+                { s: "హోయిహై సోయి జో రామ రచి రాఖా..", r: "చింతించకండి, అంతా దైవేచ్ఛ ప్రకారం జరుగుతుంది.", m: "నేటి సందర్భం: ఫలితం కోసం ఆందోళన చెందకండి, మీ పని మీరు చేయండి." },
+                { s: "గరల్ సుధా రిపు కరహిం మితాయి..", r: "కష్టాలు తొలగి శుభం జరుగుతుంది. శత్రువులు కూడా మిత్రులవుతారు.", m: "నేటి సందర్భం: కోడింగ్‌లోని బగ్స్ పరిష్కారమై సాఫ్ట్‌వేర్ సవ్యంగా పనిచేస్తుంది." }
+            ]
+        },
+        "టెక్నాలజీ": {
+            desc: "మీ ప్రాజెక్ట్ లేదా కోడింగ్ సందేహాల కోసం ఒక లకోటాను ఎంచుకోండి",
+            items: [
+                { s: "యంత్ర సిద్ధిః కార్య సిద్ధిః", r: "మీరు చేస్తున్న సాఫ్ట్‌వేర్/యంత్ర నిర్మాణం విజయవంతం అవుతుంది.", m: "టెక్ సలహా: మీ లాజిక్ కరెక్ట్‌గా ఉంది, డిప్లాయ్‌మెంట్ చేయవచ్చు." },
+                { s: "జ్ఞానం సర్వత్ర ప్రకాశతే", r: "కొత్త విద్య నేర్చుకోవడం వల్ల మీకు భవిష్యత్తులో గొప్ప గౌరవం లభిస్తుంది.", m: "టెక్ సలహా: ఏఐ (AI) లేదా కొత్త ఫ్రేమ్‌వర్క్స్ నేర్చుకోవడం వల్ల కెరీర్ గ్రోత్ ఉంటుంది." }
+            ]
+        },
+        "వ్యవసాయ": {
+            desc: "పంటలు, భూమి మరియు పెట్టుబడుల కోసం",
+            items: [
+                { s: "ధాన్య వృద్ధిః సుఖ సంతోషః", r: "ఈ ఏడాది పంట దిగుబడి ఆశాజనకంగా ఉంటుంది.", m: "నేటి సందర్భం: మీ వ్యాపార పెట్టుబడులు (Investments) వృద్ధి చెందుతాయి." }
+            ]
+        }
+    };
+
+    let currentMode = "";
+
+    function openCat(cat) {
+        currentMode = cat;
+        document.getElementById('home-screen').style.display = 'none';
+        const gridScreen = document.getElementById('grid-screen');
+        gridScreen.style.display = 'block';
+        document.getElementById('cat-title').innerText = cat;
+        document.getElementById('cat-desc').innerText = oracleData[cat]?.desc || "ఒక లకోటాను ఎంచుకోండి";
+
+        const container = document.getElementById('shloka-container');
+        container.innerHTML = "";
+        
+        // గ్రిడ్ నింపడం (7x7 లాగా 21 బాక్సులు)
+        const chars = ["అ", "సి", "ధ", "రా", "మ", "క", "జ", "శ", "వ", "గ", "ప", "ల", "న", "త", "య", "భ", "చ", "స", "హ", "క్ష", "జ్ఞ"];
+        chars.forEach(c => {
+            let div = document.createElement('div');
+            div.className = 'char-box';
+            div.innerText = c;
+            div.onclick = showResult;
+            container.appendChild(div);
+        });
+    }
+
+    function showResult() {
+        const data = oracleData[currentMode] || oracleData["శ్రీరామ చక్రం"];
+        const res = data.items[Math.floor(Math.random() * data.items.length)];
+        
+        document.getElementById('grid-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        
+        document.getElementById('p-shloka').innerText = res.s;
+        document.getElementById('p-result').innerText = res.r;
+        document.getElementById('p-modern').innerText = "💡 " + res.m;
+
+        speak(res.r);
+    }
+
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'te-IN';
+            window.speechSynthesis.speak(msg);
+        }
+    }
+
+    function goHome() {
+        window.speechSynthesis.cancel();
+        document.getElementById('result-screen').style.display = 'none';
+        document.getElementById('home-screen').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
