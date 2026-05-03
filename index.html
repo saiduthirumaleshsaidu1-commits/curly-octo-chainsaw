@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STGV - ప్రాచీన ప్రశ్న విజ్ఞాన నిధి</title>
+    <style>
+        :root {
+            --primary: #5d4037;
+            --accent: #ffd700;
+            --body-bg: #212121;
+            --paper: #f4e4c1;
+        }
+        body {
+            background-color: var(--body-bg);
+            color: #3e2723;
+            font-family: 'Times New Roman', serif;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--paper);
+            border: 8px double var(--primary);
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .header {
+            background: var(--primary);
+            color: var(--accent);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent);
+        }
+        .content { padding: 20px; overflow-y: auto; flex-grow: 1; }
+
+        /* ఆకర్షణీయమైన బటన్స్ */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .btn {
+            background: linear-gradient(145deg, #fdf5e6, #e6d5b8);
+            border: 2px solid var(--primary);
+            padding: 15px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: var(--primary);
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        /* రిజల్ట్ బాక్స్ */
+        .result-screen {
+            display: none;
+            text-align: center;
+            animation: zoomIn 0.5s ease;
+        }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .shloka-text { font-style: italic; font-size: 1.1rem; color: #795548; margin-bottom: 15px; }
+        .meaning-text { font-size: 1.3rem; font-weight: bold; color: var(--primary); margin-bottom: 15px; }
+        .modern-tip { background: #fffde7; padding: 10px; border-left: 5px solid var(--accent); font-size: 0.95rem; }
+
+        .back-btn {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: var(--accent);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <h1 style="margin:0; font-size: 1.5rem;">STGV డిజిటల్ ఒరాకిల్</h1>
+        <small>జ్ఞానమే శక్తం - ప్రాచీన ప్రశ్న విజ్ఞానం</small>
+    </div>
+
+    <div class="content">
+        <div id="home-screen">
+            <h3 style="text-align:center;">విభాగాన్ని ఎంచుకోండి</h3>
+            <div class="grid-menu">
+                <button class="btn" onclick="getResult('శ్రీరామ')">🕉️ రామ చక్రం</button>
+                <button class="btn" onclick="getResult('టెక్నాలజీ')">💻 టెక్నాలజీ</button>
+                <button class="btn" onclick="getResult('న్యాయ')">⚖️ కోర్టు/న్యాయ</button>
+                <button class="btn" onclick="getResult('ప్రయాణ')">✈️ ప్రయాణాలు</button>
+                <button class="btn" onclick="getResult('వ్యవసాయ')">🌾 వ్యవసాయం</button>
+                <button class="btn" onclick="getResult('గృహ')">🏠 గృహ/స్థల</button>
+                <button class="btn" onclick="getResult('జయ')">⚔️ శత్రువు/జయ</button>
+                <button class="btn" onclick="getResult('ఆరోగ్య')">🏥 ఆరోగ్య/శాంతి</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="result-screen">
+            <div class="shloka-text" id="p-shloka"></div>
+            <div class="meaning-text" id="p-meaning"></div>
+            <div class="modern-tip" id="p-modern"></div>
+            <button class="back-btn" onclick="goHome()">మరొక ప్రశ్న</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const database = {
+        "శ్రీరామ": [
+            { s: "ప్రబిసి నగరు కీజై సబ కాజా..", r: "తలపెట్టిన కార్యం దిగ్విజయంగా పూర్తవుతుంది.", m: "నేటి సలహా: మీరు చేస్తున్న డీల్ లేదా ప్రాజెక్ట్ సక్సెస్ అవుతుంది." },
+            { s: "హోయిహై సోయి జో రామ రచి రాఖా..", r: "అంతా దైవేచ్ఛ ప్రకారం జరుగుతుంది, ఆందోళన వద్దు.", m: "నేటి సలహా: ప్రస్తుతం ఉన్న పరిస్థితులు మారతాయి, వేచి ఉండండి." }
+        ],
+        "న్యాయ": [
+            { s: "ధర్మో రక్షతి రక్షితః", r: "న్యాయం మీ వైపు ఉంది, విజయం కలుగుతుంది.", m: "నేటి సలహా: కోర్టు పనులు లేదా వివాదాలు పరిష్కారమవుతాయి." }
+        ],
+        "ప్రయాణ": [
+            { s: "శుభస్తే పంథానః సంతు", r: "మీ ప్రయాణం క్షేమంగా, లాభదాయకంగా సాగుతుంది.", m: "నేటి సలహా: విదేశీ ప్రయత్నాలు లేదా ఊరు మారడం కలిసి వస్తుంది." }
+        ],
+        "జయ": [
+            { s: "జయతు జయతు దేవః", r: "శత్రువులపై పైచేయి సాధిస్తారు, ఆటంకాలు తొలగుతాయి.", m: "నేటి సలహా: మీ పోటీదారుల (Competitors) కంటే మీరు ముందుంటారు." },
+             { s: "నిర్భయో భవ", r: "భయం వీడండి, మీ ధైర్యమే మిమ్మల్ని గెలిపిస్తుంది.", m: "నేటి సలహా: ఇంటర్వ్యూలు లేదా ప్రెజెంటేషన్లలో విజయం మీదే." }
+        ],
+        "టెక్నాలజీ": [
+            { s: "యంత్ర సిద్ధిః కార్య సిద్ధిః", r: "మీ సాఫ్ట్‌వేర్/కోడ్ అద్భుతంగా పనిచేస్తుంది.", m: "టెక్ టిప్: కోడింగ్ లాజిక్ సరిగ్గా ఉంది, డిప్లాయ్ చేయండి." }
+        ]
+        // మరిన్ని ఇక్కడ చేర్చుకోవచ్చు...
+    };
+
+    function getResult(cat) {
+        const catData = database[cat] || database["శ్రీరామ"];
+        const res = catData[Math.floor(Math.random() * catData.length)];
+
+        document.getElementById('home-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+
+        document.getElementById('p-shloka').innerText = res.s;
+        document.getElementById('p-meaning').innerText = res.r;
+        document.getElementById('p-modern').innerText = "💡 " + res.m;
+
+        speak(res.r);
+    }
+
+    function speak(text) {
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'te-IN';
+        window.speechSynthesis.speak(msg);
+    }
+
+    function goHome() {
+        window.speechSynthesis.cancel();
+        document.getElementById('result-screen').style.display = 'none';
+        document.getElementById('home-screen').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
